@@ -9,3 +9,6 @@ frontend/.env
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+# To ensusre Python virtual environment files are ignored
+ai-service/env/
