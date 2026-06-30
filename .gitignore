@@ -12,6 +12,7 @@ Thumbs.db
 
 # To ensusre Python virtual environment files are ignored
 ai-service/env/
+
 # Ignore Python compiled cache files
 **/__pycache__/
 *.pyc

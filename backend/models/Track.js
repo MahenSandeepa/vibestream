@@ -1,17 +1,36 @@
-// Build the Datbase Models
-// models/Track.js
+// backend/models/Track.js
 const mongoose = require('mongoose');
 
-const TrackSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  artist: { type: String, required: true },
-  audioUrl: { type: String, required: true }, // URL to where the file is stored
-  genre: { type: String, required: true },
-  audioFeatures: {
-    tempo: { type: Number, default: 120 },
-    energy: { type: Number, default: 0.5 },
-  },
-  createdAt: { type: Date, default: Date.now }
-});
+const trackSchema = new mongoose.Schema({
+    track_id: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+    title: { 
+        type: String, 
+        required: true 
+    },
+    artist: { 
+        type: String, 
+        required: true 
+    },
+    tempo: { 
+        type: Number, 
+        required: true 
+    },
+    energy: { 
+        type: Number, 
+        required: true 
+    },
+    danceability: { 
+        type: Number, 
+        required: true 
+    },
+    valence: { 
+        type: Number, 
+        required: true 
+    }
+}, { timestamps: true });
 
-module.exports = mongoose.model('Track', TrackSchema);
+module.exports = mongoose.model('Track', trackSchema);
