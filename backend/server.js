@@ -1,6 +1,5 @@
 // Wire Up the Main Stream
 // Imports dependencies, connects to the database, and starts listening for API requests
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,8 +11,10 @@ const recommendationRoutes = require('./routes/recommendationRoutes');
 const app = express();
 
 // Middleware
+// Enables CORS so the React frontend on port 5173 can communicate with this API
 app.use(cors());
-app.use(express.json()); // Allows the server to accept JSON data
+// Allows the server to accept and parse incoming JSON data
+app.use(express.json()); 
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

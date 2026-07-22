@@ -1,0 +1,143 @@
+/* frontend/src/App.css */
+body {
+  background-color: #121212;
+  color: #ffffff;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.vibestream-container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  background: #181818;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid #282828;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: #1db954; /* Spotify Green */
+}
+
+p {
+  color: #b3b3b3;
+}
+
+.controls-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+select {
+  flex-grow: 1;
+  padding: 0.8rem 1rem;
+  background-color: #242424;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+select:hover, select:focus {
+  border-color: #1db954;
+}
+
+button {
+  background-color: #1db954;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover:not(:disabled) {
+  background-color: #1ed760;
+  transform: scale(1.02);
+}
+
+button:disabled {
+  background-color: #333333;
+  color: #777777;
+  cursor: not-allowed;
+}
+
+.error-box {
+  background-color: rgba(255, 82, 82, 0.1);
+  border-left: 4px solid #ff5252;
+  color: #ff5252;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.results-section {
+  margin-top: 2.5rem;
+}
+
+.results-section h2 {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: #ffffff;
+}
+
+.highlight-song {
+  color: #1db954;
+  font-weight: bold;
+}
+
+.track-card {
+  background: #242424;
+  margin: 1rem 0;
+  padding: 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+  transition: transform 0.2s;
+}
+
+.track-card:hover {
+  background: #2a2a2a;
+}
+
+.track-title {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.track-artist {
+  color: #b3b3b3;
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.progress-track {
+  margin-top: 0.8rem;
+  background: #333333;
+  border-radius: 4px;
+  overflow: hidden;
+  height: 6px;
+}
+
+.progress-fill {
+  background: #1db954;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.confidence-text {
+  color: #b3b3b3;
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  text-align: right;
+}

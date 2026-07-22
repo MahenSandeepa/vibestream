@@ -1,72 +1,97 @@
 // frontend/src/App.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
 function App() {
-  const [trackId, setTrackId] = useState('t1');
+  const [catalog, setCatalog] = useState([]);
+  const [selectedTrackId, setSelectedTrackId] = useState('');
   const [targetSong, setTargetSong] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchCatalog = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/recommendations');
+        setCatalog(response.data);
+        if (response.data.length > 0) {
+          setSelectedTrackId(response.data[0].track_id);
+        }
+      } catch (err) {
+        console.error("Catalog fetch error:", err);
+        setError("Could not load music catalog. Is the backend running?");
+      }
+    };
+    fetchCatalog();
+  }, []);
+
   const fetchRecommendations = async () => {
+    if (!selectedTrackId) return;
     setLoading(true);
     setError(null);
     
     try {
-      // Calling our Node.js bridge on port 5000
-      const response = await axios.get(`http://localhost:5000/api/recommendations/${trackId}`);
-      
+      const response = await axios.get(`http://localhost:5000/api/recommendations/${selectedTrackId}`);
       setTargetSong(response.data.target_analyzed);
       setRecommendations(response.data.recommended_tracks);
     } catch (err) {
       console.error(err);
-      setError("Failed to fetch recommendations. Is the backend running?");
+      setError("Failed to fetch recommendations from the AI engine.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>VibeStream AI 🎵</h1>
+    <div className="vibestream-container">
+      <h1>VibeStream AI 🎧</h1>
+      <p>Select a track from your library to generate tailored content-based AI recommendations.</p>
       
-      <div style={{ marginBottom: '1rem' }}>
-        <input 
-          type="text" 
-          value={trackId} 
-          onChange={(e) => setTrackId(e.target.value)}
-          placeholder="Enter Track ID (e.g., t1)"
-          style={{ padding: '0.5rem', marginRight: '0.5rem' }}
-        />
-        <button onClick={fetchRecommendations} disabled={loading} style={{ padding: '0.5rem 1rem' }}>
-          {loading ? 'Analyzing...' : 'Get Recommendations'}
+      <div className="controls-group">
+        <select 
+          value={selectedTrackId} 
+          onChange={(e) => setSelectedTrackId(e.target.value)}
+        >
+          {catalog.length === 0 && <option>Loading songs...</option>}
+          {catalog.map((track) => (
+            <option key={track.track_id} value={track.track_id}>
+              {track.title} — {track.artist}
+            </option>
+          ))}
+        </select>
+
+        <button 
+          onClick={fetchRecommendations} 
+          disabled={loading || catalog.length === 0}
+        >
+          {loading ? 'Analyzing...' : 'Match Tracks'}
         </button>
       </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <div className="error-box">{error}</div>}
 
       {targetSong && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2>Because you listened to: <span style={{ color: '#007BFF' }}>{targetSong}</span></h2>
+        <div className="results-section">
+          <h2>Because you listened to <span className="highlight-song">{targetSong}</span>:</h2>
           
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
+          <div>
             {recommendations.map((track) => (
-              <li key={track.track_id} style={{ 
-                background: '#f4f4f4', 
-                margin: '1rem 0', 
-                padding: '1rem', 
-                borderRadius: '8px' 
-              }}>
-                <strong>{track.title}</strong> by {track.artist}
-                <br />
-                <small style={{ color: 'gray' }}>
-                  AI Match Score: {(track.match_score * 100).toFixed(2)}%
-                </small>
-              </li>
+              <div key={track.track_id} className="track-card">
+                <div>
+                  <div className="track-title">{track.title}</div>
+                  <div className="track-artist">by {track.artist}</div>
+                </div>
+                <div className="progress-track">
+                  <div className="progress-fill" style={{ width: `${track.match_score * 100}%` }}></div>
+                </div>
+                <span className="confidence-text">
+                  AI Match: {(track.match_score * 100).toFixed(1)}%
+                </span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
