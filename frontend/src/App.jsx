@@ -87,7 +87,7 @@ function App() {
                   <div className="progress-fill" style={{ width: `${track.match_score * 100}%` }}></div>
                 </div>
                 <span className="confidence-text">
-                  AI Match: {(track.match_score * 100).toFixed(1)}%
+                  Similarity Score: {(track.match_score * 100).toFixed(1)}%
                 </span>
               </div>
             ))}
